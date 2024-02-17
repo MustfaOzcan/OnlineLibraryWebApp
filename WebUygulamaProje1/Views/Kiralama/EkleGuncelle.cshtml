@@ -1,0 +1,82 @@
+﻿@model Kiralama 
+
+
+<form method="post" enctype="multipart/form-data">
+
+		<div class="row">
+
+			
+			<div class="col-9">
+
+				<div class="border">
+
+
+				<div class=" row pb-2">
+
+					<h2 class="text-primary">@(Model == null ? "Yeni Kiralama " : "Kiralama Güncelle")</h2>
+					<hr />
+
+				</div>
+
+				<div class="form-group">
+					<label asp-for="OgrenciId" class="col-form-label mt-4" for="inputDefault">Öğrenci ID: </label>
+					<input asp-for="OgrenciId" class="form-control" placeholder="Öğrenci ID" id="inputDefault">
+					<span asp-validation-for="OgrenciId" class="text-danger"></span>
+
+				</div>
+
+				<div class="form-group">
+					<label asp-for="KitapId" class="p-0">Kitap Türü</label>
+					<select asp-for="KitapId" asp-items="ViewBag.KitapList" class="form-select">
+					</select>
+				</div>
+
+
+				@if (Model != null)
+				{
+					@* model null değil ise -> güncelleme  *@
+					<button type="submit" class="btn btn-lg btn-primary" style="width:100px">Güncelle</button>
+
+				}
+				else
+				{
+					@* model null ise -> ekleme  *@
+					<button type="submit" class="btn btn-lg btn-primary" style="width:100px">
+						Yeni  Kiralama
+					</button>
+
+				}
+
+				<a asp-controller="Kiralama" asp-action="Index" class="btn btn-lg btn-primary" style="width:250px">
+					Kiralamalar Listesi
+				</a>
+
+			</div>
+
+				</div>
+			<div class="col-3">
+				<div>
+					@if (@Model != null)
+					{
+						<img src="@Model.Kitap.ResimURL" width="50%" style="border-radius:7px; border:1px solid">
+					}
+				</div>
+
+			</div>
+
+		</div>
+
+	
+		
+		
+
+	
+
+
+
+
+
+	
+
+
+</form>

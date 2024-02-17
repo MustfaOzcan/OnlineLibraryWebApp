@@ -1,0 +1,104 @@
+﻿@model WebUygulamaProje1.Models.State
+
+@{
+    ViewData["Title"] = "CreateState";
+}
+
+<h1>CreateState</h1>
+
+<h4>State</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+
+        <form asp-action="CreateState">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CountryId" class="control-label"></label>
+                <select asp-for="CountryId" class ="form-control" asp-items="ViewBag.Countries"></select>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Gonder" class="btn btn-primary" />
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@* 
+@section Scripts
+    {
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            //DropdownList Selectedchange event
+            $("#CountryList").change(function () {
+                $("#StateList").empty();
+                $("#CityList").empty();
+                $.ajax({
+
+                    type: 'GET',
+                    url: '@Url.Action("LoadState")',
+                    dataType: 'json',
+                    data: { id: $("#CountryList").val() },
+
+                    success: function (states) {
+                        $("#StateList").append('<option value="' + -1 + '">' + "Select State" + '</option>');
+
+                        $.each(states, function (i, state) {
+                            $("StateList").append('<options value="' + state.value + '">' + state.text + '</option>');
+
+                        });
+
+                    },
+                    error: function (ex) {
+                        alert('failed to retrieve states.' + ex);
+                    }
+
+                });
+                return false;
+            })
+
+            $("#StateList").change(function ()) {
+
+                $("#CityList").empty();
+                $.ajax({
+
+                    type: 'GET',
+                    url: '@Url.Action("LoadCity")',
+                    dataType: 'json',
+                    data: { id: $("#CityList").val() },
+
+                    success: function (states) {
+                        $("#CityList").append('<option value="' + -1 + '">' + "Select State" + '</option>');
+
+                        $.each(states, function (i, state) {
+                            $("CityList").append('<options value="' + state.value + '">' + state.text + '</option>');
+
+                        });
+
+                    },
+                    error: function (ex) {
+                        alert('failed to retrieve states.' + ex);
+                    }
+                });
+                return false;
+            }
+        })
+
+    </script>
+
+
+} *@

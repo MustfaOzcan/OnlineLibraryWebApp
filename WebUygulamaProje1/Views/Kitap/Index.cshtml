@@ -1,0 +1,183 @@
+﻿@using WebUygulamaProje1.Utility;
+@model List<Kitap> 
+
+@if (TempData["basarili"] != null)
+{
+	<h2 class="text-success">@TempData["basarili"]</h2>
+}
+
+	<div class="container">
+
+
+		<div class="row pt-3 pb-4">
+
+		<h1><bold>Kitaplar</bold></h1>
+
+		</div>
+
+		<table class="table table-hover">
+
+			<thead>
+				<tr class="table-primary">
+
+					<th>
+						@* //Kitap resim *@
+					</th>
+
+					<th>
+						Id
+					</th>
+					<th>
+						Kitap Adı
+					</th>
+
+					<th>
+					Kitap Tanım
+					</th>
+
+
+					<th>
+					Yazar
+					</th>
+
+
+					<th>
+					Fiyat
+					</th>
+
+					<th>
+					Kitap Türü
+					</th>
+
+				@if (User.IsInRole(UserRoles.Role_Admin))
+				{
+
+					<th>
+						<!--güncelle header-->
+					</th>
+
+					<th>
+
+						<!--sil header-->
+					</th>
+				
+				}
+
+				@if (User.IsInRole(UserRoles.Role_Ogrenci))
+				{
+
+					<th>
+						Detay
+					</th>
+
+
+				}
+					
+				</tr>
+			</thead>
+
+
+			<tbody>
+				@foreach (var kitap in Model)
+				{
+					<tr class="table-secondary">
+
+
+						<td align="center" valign="middle">
+
+						<img src="@kitap.ResimURL"  style="border-radius:7px; border:1px solid; max-width:145px; max:275px;" />
+
+						</td>
+
+
+						<td>
+							@kitap.Id
+						</td>
+
+						<td>
+							@kitap.KitapAdi
+						</td>
+
+						<td>
+							@kitap.Tanim
+						</td>
+
+
+						<td>
+							@kitap.Yazar
+						</td>
+
+
+						<td>
+							@kitap.Fiyat
+						</td>
+
+						<td>
+							@kitap.KitapTuru.Ad
+						</td>
+
+
+
+					@if (User.IsInRole(UserRoles.Role_Admin))//Rol adminse gir
+					{
+
+						<td>
+							<a asp-controller="Kitap" asp-action="EkleGuncelle" asp-route-id="@kitap.Id" type="button" class="btn btn-outline-primary">Güncelle</a>
+						</td>
+
+						<td>
+							<a asp-controller="Kitap" asp-action="Sil" asp-route-id="@kitap.Id" type="button" class="btn btn-outline-danger">Sil</a>
+						</td>
+					}
+
+					@if (User.IsInRole(UserRoles.Role_Ogrenci))//Rol ogrenci ise Kitap Detaya gir
+					{
+
+						<td>
+							<a asp-controller="Kitap" asp-action="Detay" asp-route-id="@kitap.Id" type="button" class="btn btn-outline-primary">Detay</a>
+						</td>
+
+						
+					}
+					
+						
+
+					
+
+						
+					</tr>
+				}
+			</tbody>
+
+			</table>
+
+		<div class="row pt-3 pb-2">
+
+
+
+		@if (User.IsInRole(UserRoles.Role_Admin))//Rol adminse gir
+		{
+
+			<div>
+
+				<a asp-controller="Kitap" asp-action="EkleGuncelle" class="btn btn-lg btn-primary" type="button">
+
+					Yeni Kitap  Oluştur
+				</a>
+			</div>
+
+			
+		}
+			
+			
+
+		
+
+		</div>
+			
+	</div>
+
+
+
+
+

@@ -1,0 +1,96 @@
+﻿@model IEnumerable<WebUygulamaProje1.Models.Country>
+
+@{
+    ViewData["Title"] = "CascadeList";
+}
+
+<h1>CascadeList</h1>
+
+<form>
+    <select id="CountryList" asp-items=@ViewBag.Countries>
+        <option>Select Country</option>
+
+
+
+    </select>
+
+  
+    <select id="StateList">
+        <option value="-1"> Select State</option>
+    </select>
+
+    <select id="CityList">
+        <option> Select City</option>
+    </select>
+
+</form>
+
+<button id="listButton">List Data</button>
+
+<div id="dataList"></div>
+
+@section Scripts
+    {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#CountryList").change(function () {
+                $("#StateList").empty();
+                $("#CityList").empty();
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("LoadState")',
+                    dataType: 'json',
+                    data: { id: $("#CountryList").val() },
+                    success: function (states) {
+                        $("#StateList").append('<option value="-1">Select State</option>');
+                        $.each(states, function (i, state) {
+                            $("#StateList").append('<option value="' + state.value + '">' + state.text + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Failed to retrieve states.' + ex);
+                    }
+                });
+                return false;
+            });
+
+            $("#StateList").change(function () {
+                $("#CityList").empty();
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("LoadCity")',
+                    dataType: 'json',
+                    data: { id: $("#StateList").val() }, // State'in ID'sini almalısınız
+                    success: function (cities) {
+                        $("#CityList").append('<option value="-1">Select City</option>');
+                        $.each(cities, function (i, city) {
+                            $("#CityList").append('<option value="' + city.value + '">' + city.text + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Failed to retrieve cities.' + ex);
+                    }
+                });
+                return false;
+            });
+
+            $("#listButton").click(function () {
+                var selectedCountry = $("#CountryList").val();
+                var selectedState = $("#StateList").val();
+                var selectedCity = $("#CityList").val();
+
+                // Burada seçilen ülke, eyalet ve şehir değerlerini kullanarak verileri listeleyebilirsiniz.
+                var selectedData = "Selected Country: " + selectedCountry + "<br>" +
+                    "Selected State: " + selectedState + "<br>" +
+                    "Selected City: " + selectedCity;
+
+                // Verileri sayfada göstermek için dataList div'ine ekleyebilirsiniz.
+                $("#dataList").html(selectedData);
+            });
+
+
+
+        });
+    </script>
+}
+
